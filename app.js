@@ -3,7 +3,6 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const http = require('http');
 const { Server } = require('socket.io');
-
 const disasterRoutes = require('./routes/disasters');
 const socialRoutes = require('./routes/socialMedia');
 const geocodeRoutes = require('./routes/geocode');
@@ -12,16 +11,18 @@ const verifyImageRoutes = require('./routes/verifyImage');
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: '*' } });
+const io = new Server(server, { cors: { origin: "*" } });
 
 app.use(cors());
 app.use(express.json());
 
+// Routes
 app.use('/disasters', disasterRoutes);
 app.use('/social-media', socialRoutes);
 app.use('/geocode', geocodeRoutes);
 app.use('/verify-image', verifyImageRoutes);
 
+// WebSocket
 io.on('connection', socket => {
     console.log('Client connected');
     socket.on('disconnect', () => console.log('Client disconnected'));
